@@ -1,0 +1,51 @@
+Raw rows: 245,442 | classes: 38
+Rows where folder != category: 0
+Dropped exact duplicate rows: 463
+Dropped split-name folders ['Test', 'Train', 'Valid']: 19,377 rows
+Augmented rows: 200,495 | orphans (no original found): 0
+Original images filed under >1 class: 433
+Final classes: 35 (Healthy + 34 conditions)
+Removed pre-made augmentations per config: 60,116
+Groups appearing in more than one split (must be 0): 0
+
+Rows per split (all / originals only / healthy originals):
+  train: 157,945 / 17,566 /  119
+  val  :   3,762 /  3,762 /   25
+  test :   3,779 /  3,779 /   26
+
+Original images per class (true data size before augmentation):
+     99  Ba Impetigo
+    113  Fu Ringworm
+    124  Fu Athlete Foot
+    125  Pa Cutaneous Larva Migrans
+    162  Fu Nail Fungus
+    163  Vi Shingles
+    168  Ba Cellulitis
+    170  Healthy
+    170  Vi Chickenpox
+    265  Urticaria Hives
+    299  Hair Loss Photos Alopecia And Other Hair Diseases
+    325  Poison Ivy Photos And Other Contact Dermatitis
+    361  Cellulitis Impetigo And Other Bacterial Infections
+    505  Exanthems And Drug Eruptions
+    507  Herpes Hpv And Other Stds Photos
+    521  Vasculitis Photos
+    525  Lupus And Other Connective Tissue Diseases
+    539  Scabies Lyme Disease And Other Infestations And Bites
+    561  Bullous Disease Photos
+    579  Melanoma Skin Cancer Nevi And Moles
+    603  Vascular Tumors
+    612  Atopic Dermatitis Photos
+    711  Light Diseases And Disorders Of Pigmentation
+    758  Systemic Disease
+    882  Acne And Rosacea Photos
+  1,227  Rashes
+  1,301  Nail Fungus And Other Nail Disease
+  1,358  Warts Molluscum And Other Viral Infections
+  1,437  Actinic Keratosis Basal Cell Carcinoma And Other Malignant Lesions
+  1,497  Malignant
+  1,544  Eczema Photos
+  1,625  Tinea Ringworm Candidiasis And Other Fungal Infections
+  1,714  Seborrheic Keratoses And Other Benign Tumors
+  1,757  Psoriasis Pictures Lichen Planus And Related Diseases
+  1,800  Benign
