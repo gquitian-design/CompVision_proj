@@ -9,9 +9,9 @@ Removed pre-made augmentations per config: 0
 Groups appearing in more than one split (must be 0): 0
 
 Rows per split (all / originals only / healthy originals):
-  train:  17,566 / 17,566 /  119
-  val  :   3,762 /  3,762 /   25
-  test :   3,779 /  3,779 /   26
+  train:  17,570 / 17,570 /  117
+  val  :   3,769 /  3,769 /   26
+  test :   3,768 /  3,768 /   27
 
 Original images per class (true data size before augmentation):
      99  Ba Impetigo
@@ -21,8 +21,8 @@ Original images per class (true data size before augmentation):
     162  Fu Nail Fungus
     163  Vi Shingles
     168  Ba Cellulitis
-    170  Healthy
     170  Vi Chickenpox
+    170  Healthy
     265  Urticaria Hives
     299  Hair Loss Photos Alopecia And Other Hair Diseases
     325  Poison Ivy Photos And Other Contact Dermatitis

@@ -27,8 +27,17 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 try:
     from tqdm import tqdm
 except ImportError:
-    def tqdm(iterable, *args, **kwargs):
-        return iterable
+    class tqdm:
+        """Lightweight fallback when tqdm is not installed."""
+        def __init__(self, iterable, *args, **kwargs):
+            self.iterable = iterable
+        def __iter__(self):
+            for item in self.iterable:
+                yield item
+        def __len__(self):
+            return len(self.iterable) if hasattr(self.iterable, "__len__") else 0
+        def set_postfix(self, *args, **kwargs):
+            pass
 
 from src.dataset import get_dataloaders
 from src.model import SkinConditionCNN
@@ -265,7 +274,7 @@ if __name__ == "__main__":
     parser.add_argument("--lr", type=float, default=1e-3, help="Initial learning rate")
     parser.add_argument("--weight_decay", type=float, default=1e-4, help="L2 weight decay for AdamW")
     parser.add_argument("--dropout", type=float, default=0.4, help="Dropout rate in classifier")
-    parser.add_argument("--num_workers", type=int, default=2, help="Number of DataLoader worker processes")
+    parser.add_argument("--num_workers", type=int, default=0, help="Number of DataLoader worker processes (0 for macOS stability)")
     parser.add_argument("--use_class_weights", action="store_true", default=True, help="Use inverse-frequency class weights")
     parser.add_argument("--scheduler_patience", type=int, default=3, help="LR scheduler patience (epochs)")
     parser.add_argument("--early_stopping_patience", type=int, default=10, help="Early stopping patience (epochs)")

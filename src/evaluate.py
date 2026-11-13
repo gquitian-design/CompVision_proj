@@ -18,6 +18,8 @@ os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 # Ensure project root is in sys.path so 'src.' imports work when run directly
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix
@@ -26,8 +28,16 @@ import torch
 try:
     from tqdm import tqdm
 except ImportError:
-    def tqdm(iterable, *args, **kwargs):
-        return iterable
+    class tqdm:
+        def __init__(self, iterable, *args, **kwargs):
+            self.iterable = iterable
+        def __iter__(self):
+            for item in self.iterable:
+                yield item
+        def __len__(self):
+            return len(self.iterable) if hasattr(self.iterable, "__len__") else 0
+        def set_postfix(self, *args, **kwargs):
+            pass
 
 from src.dataset import get_dataloaders
 from src.model import SkinConditionCNN
@@ -159,7 +169,7 @@ if __name__ == "__main__":
     parser.add_argument("--manifest_dir", type=str, default="preprocessed", help="Directory containing preprocessed CSV splits (optional)")
     parser.add_argument("--output_dir", type=str, default="checkpoints", help="Directory to save evaluation plots")
     parser.add_argument("--batch_size", type=int, default=32, help="Evaluation batch size")
-    parser.add_argument("--num_workers", type=int, default=2, help="Number of DataLoader workers")
+    parser.add_argument("--num_workers", type=int, default=0, help="Number of DataLoader workers (0 for macOS stability)")
 
     args = parser.parse_args()
     evaluate_checkpoint(args)

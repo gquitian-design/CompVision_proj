@@ -17,6 +17,9 @@ from pathlib import Path
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+import matplotlib
+matplotlib.use("Agg")
+
 from PIL import Image
 import torch
 import torch.nn.functional as F

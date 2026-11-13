@@ -49,13 +49,14 @@ class SkinConditionCNN(nn.Module):
             nn.MaxPool2d(kernel_size=2, stride=2)
         )
 
-        # Spatial adapter before classification: (256, 4, 4) -> 4096 elements
-        self.adaptive_pool = nn.AdaptiveAvgPool2d((4, 4))
+        # Spatial adapter before classification: (256, 2, 2) -> 1024 elements
+        # Note: (2, 2) ensures Apple Silicon MPS compatibility because spatial size 14 is divisible by 2.
+        self.adaptive_pool = nn.AdaptiveAvgPool2d((2, 2))
 
-        #Classifier head
+        # Classifier head (Layers 13, 14, 15)
         self.classifier = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(256 * 4 * 4, 512),
+            nn.Linear(256 * 2 * 2, 512),
             nn.BatchNorm1d(512),
             nn.ReLU(inplace=True),
             nn.Dropout(p=dropout_rate),
@@ -72,7 +73,20 @@ class SkinConditionCNN(nn.Module):
         x = self.block3(x)
         x = self.block4(x)
 
-        x = self.addaptive_pool(x)
+        # Handle Apple Silicon MPS edge-case if non-divisible dimensions are ever passed
+        if x.device.type == "mps" and (x.shape[2] % 2 != 0 or x.shape[3] % 2 != 0):
+            x = self.adaptive_pool(x.to("cpu")).to(x.device)
+        else:
+            x = self.adaptive_pool(x)
 
         logits = self.classifier(x)
         return logits
+
+
+if __name__ == "__main__":
+    model = SkinConditionCNN(num_classes=35)
+    dummy_input = torch.randn(2, 3, 224, 224)
+    out = model(dummy_input)
+    print("Forward pass successful!")
+    print(f"Input shape:  {dummy_input.shape}")
+    print(f"Output shape: {out.shape} (Expected: [2, 35])")

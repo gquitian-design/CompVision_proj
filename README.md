@@ -14,8 +14,8 @@ The network follows a repetitive pattern of **2 convolutional layers followed by
 | **Block 2** | Layer 4, 5, 6 | Conv2D ($64$) $\rightarrow$ Conv2D ($64$) $\rightarrow$ MaxPool ($2 \times 2$) | $56 \times 56 \times 64$ |
 | **Block 3** | Layer 7, 8, 9 | Conv2D ($128$) $\rightarrow$ Conv2D ($128$) $\rightarrow$ MaxPool ($2 \times 2$) | $28 \times 28 \times 128$ |
 | **Block 4** | Layer 10, 11, 12 | Conv2D ($256$) $\rightarrow$ Conv2D ($256$) $\rightarrow$ MaxPool ($2 \times 2$) | $14 \times 14 \times 256$ |
-| **Adapter** | — | Adaptive Average Pooling | $4 \times 4 \times 256$ ($4,096$ flattened) |
-| **Classifier** | Layer 13 | Dense ($4096 \rightarrow 512$) + BatchNorm + ReLU + Dropout ($p=0.4$) | $512$ |
+| **Adapter** | — | Adaptive Average Pooling | $2 \times 2 \times 256$ ($1,024$ flattened) |
+| **Classifier** | Layer 13 | Dense ($1024 \rightarrow 512$) + BatchNorm + ReLU + Dropout ($p=0.4$) | $512$ |
 | | Layer 14 | Dense ($512 \rightarrow 256$) + BatchNorm + ReLU + Dropout ($p=0.3$) | $256$ |
 | | Layer 15 | Dense ($256 \rightarrow 35$) **Output Logits** | $35$ |
 

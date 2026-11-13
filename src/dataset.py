@@ -138,7 +138,7 @@ def get_dataloaders(
     data_dir: str = "data",
     manifest_dir: Optional[str] = "preprocessed",
     batch_size: int = 32,
-    num_workers: int = 2,
+    num_workers: int = 0,
     image_size: Tuple[int, int] = (224, 224),
     data: Optional[str] = None
 ) -> Dict[str, Union[DataLoader, List[str], torch.Tensor]]:
