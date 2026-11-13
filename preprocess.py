@@ -14,11 +14,12 @@ from sklearn.model_selection import StratifiedGroupKFold
 # ----------------------------------------------------------------------
 # CONFIG - Option 1: CSV Manifest with data/<Class Name>/<image.jpg>
 # ----------------------------------------------------------------------
-RAW_CSV = Path("balanced_dataset.csv")
+PROJECT_ROOT = Path(__file__).resolve().parent
+RAW_CSV = PROJECT_ROOT / "balanced_dataset.csv"
 OUT_DIR = Path("preprocessed")
 
 # Folder containing the 35 class subfolders (e.g. data/Healthy/...)
-DATA_ROOT = Path("data")
+DATA_ROOT = PROJECT_ROOT / "data"
 
 # Non-diagnosis folders to drop (case-insensitive)
 DROP_CATEGORIES = {"test", "train", "val", "valid", "Test", "Train", "Valid", "Val"}
