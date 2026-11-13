@@ -1,10 +1,6 @@
 """
 Skin Lesion Classification -- preprocessing
 
-
-
-
-
 """
 
 import json
@@ -16,16 +12,16 @@ import pandas as pd
 from sklearn.model_selection import StratifiedGroupKFold
 
 # ----------------------------------------------------------------------
-# CONFIG -
+# CONFIG - Option 1: CSV Manifest with data/<Class Name>/<image.jpg>
 # ----------------------------------------------------------------------
 RAW_CSV = Path("balanced_dataset.csv")
 OUT_DIR = Path("preprocessed")
 
-# Folder with 38 class folders
-DATA_ROOT = Path("D:/python files/datasets/Dermabot/balanced_dataset")
+# Folder containing the 35 class subfolders (e.g. data/Healthy/...)
+DATA_ROOT = Path("data")
 
-# Folders that are dataset split names. 
-DROP_CATEGORIES = {"Train", "Test", "Valid"}
+# Non-diagnosis folders to drop (case-insensitive)
+DROP_CATEGORIES = {"test", "train", "val", "valid", "Test", "Train", "Valid", "Val"}
 
 # Raw folder name -> clean class name. 
 RENAME = {
@@ -55,6 +51,11 @@ def log(report, msg=""):
 
 
 def build_manifest(report):
+    if not RAW_CSV.exists():
+        log(report, f"[Error] '{RAW_CSV.resolve()}' not found.")
+        log(report, f"Please place 'balanced_dataset.csv' in the project directory before running preprocess.py.")
+        return None, None
+
     df = pd.read_csv(RAW_CSV)
     log(report, f"Raw rows: {len(df):,} | classes: {df['category'].nunique()}")
 
@@ -166,6 +167,8 @@ def main():
     OUT_DIR.mkdir(exist_ok=True)
     report = []
     df, class_to_idx = build_manifest(report)
+    if df is None:
+        return
     df = assign_splits(df, report)
     summarise(df, report)
 
