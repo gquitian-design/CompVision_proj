@@ -43,7 +43,9 @@ from src.dataset import get_dataloaders
 from src.model import SkinConditionCNN
 
 
-def get_device() -> torch.device:
+def get_device(force_cpu: bool = False) -> torch.device:
+    if force_cpu:
+        return torch.device("cpu")
     if torch.cuda.is_available():
         return torch.device("cuda")
     if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
@@ -79,7 +81,7 @@ def plot_confusion_matrix(cm: np.ndarray, class_names: list, save_path: str):
 
 
 def evaluate_checkpoint(args):
-    device = get_device()
+    device = get_device(force_cpu=args.cpu)
     if not os.path.exists(args.checkpoint):
         print(f"Error: Checkpoint '{args.checkpoint}' not found.")
         return
@@ -170,6 +172,7 @@ if __name__ == "__main__":
     parser.add_argument("--output_dir", type=str, default="checkpoints", help="Directory to save evaluation plots")
     parser.add_argument("--batch_size", type=int, default=32, help="Evaluation batch size")
     parser.add_argument("--num_workers", type=int, default=0, help="Number of DataLoader workers (0 for macOS stability)")
+    parser.add_argument("--cpu", action="store_true", help="Force CPU inference (useful when MPS is unavailable)")
 
     args = parser.parse_args()
     evaluate_checkpoint(args)
